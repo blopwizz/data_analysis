@@ -152,14 +152,14 @@ for k in range(1,11):
     
             for k in range(numPhotoTraining, len(S1)):
             
-                d = 1
+                d = 0.5
             
                 tCurrent = S1[k]  #current event time (user submit)
                 tPast = S1[k-1]  #last past event time
                 tInit = tPast + 1 #init data after the black screen
             
                 #definition of time frame for average computation
-                if (tCurrent - tPast < d+1):  #quick answer from user (1s black + 3s reflexion)
+                if (tCurrent - tPast < d):  #quick answer from user (1s black + 3s reflexion)
                     tEnd = tCurrent
                 else: 
                     tEnd = tInit + d
@@ -180,13 +180,24 @@ for k in range(1,11):
             #print A[9:]
             #print(np.corrcoef(EB_, A[9:]))
             plt.clf()
+            
+            # Mikko's stuff for testing best sequences of data
+            # check for example 0:10 for the first user
+            na = A[5:15]
+            nk = EB_[5:15]
+            rho = stat.spearmanr(na, nk)
+            print rho
+            #####
+            
+            
             plt.plot(S1[9:], A[9:])
-            plt.plot(S1[9:], EB_)
-            r = stat.spearmanr(A[9:], EB_)[0]
+            plt.plot(S1[9:], EB_)[0]
+            r = stat.spearmanr(A[9:], EB_)
             plt.xlabel('user '+user+ ', Spearman r=' + str(r))
             plt.savefig(user + '_analysis')
-            #print r
-
+            print r
+            
+            
             #plt.plot(A[9:], EB_, 'ro')
             #plt.axis([0, 1, 0, 1])
 #            
